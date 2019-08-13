@@ -47,14 +47,18 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    <script data-cfasync="false" async type="text/javascript" src="//adop.pw/display/items.php?8592&2243&0&0&9"></script>
+    <script data-cfasync="false" async type="text/javascript" src="//adop.pw/display/items.php?8592&2243&0&0&9">
+    </script>
 
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143316096-2"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
         gtag('js', new Date());
 
         gtag('config', 'UA-143316096-2');
@@ -97,6 +101,15 @@
             padding-right: 5px;
             padding-left: 5px;
         }
+
+        @media only screen and (max-width: 768px) {
+
+            /* For mobile phones: */
+            .navbar-brand {
+                height: 25% !important;
+                width: 25% !important;
+            }
+        }
     </style>
 
 
@@ -105,7 +118,7 @@
 <body>
     <nav class="navbar navbar-expand-sm bg-light navbar-light">
         <!-- Brand/logo -->
-        <img src="./logo1.png" class="navbar-brand" height="7%" width="7%" style="margin-left:10px;">
+        <img src="./logo1.png" class="navbar-brand" height="8%" width="8%" style="margin-left:10px;">
         <!-- Links -->
         <ul class="nav navbar-nav navbar-right">
             <li class="nav-item">
@@ -139,11 +152,11 @@
 
         <div class="row text-center justify-content-around">
 
-            
+
             <div class="card col-md-3">
 
                 <div class="card-body">
-                    <h4>Email Us at <br></h4> <br> 
+                    <h4>Email Us at <br></h4> <br>
                     <a href="#">coderssubhahu@gmail.com</a>
                     <br><br>
                     OR
@@ -153,7 +166,7 @@
                 </div>
             </div>
 
-            
+
 
         </div>
 
