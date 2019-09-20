@@ -661,50 +661,6 @@ function search() {
 
 
     var subjectscodedata = `{
-    "99201": {
-        "papercode": "ETMA201",
-        "subject": "APPLIED MATHEMATICS"
-      },
-      "28203": {
-        "papercode": "ETEC203",
-        "subject": "ANALOG ELECTRONICS"
-      },
-      "28205": {
-        "papercode": "ETEC205",
-        "subject": "SWITCHING THEORY AND LOGIC DESIGN"
-      },
-      "28207": {
-        "papercode": "ETEC207",
-        "subject": "ELECTRONIC INSTRUMENTS AND MEASUREMENTS"
-      },
-      "27209": {
-        "papercode": "ETCS209",
-        "subject": "DATA STRUCTURES"
-      },
-      "28211": {
-        "papercode": "ETEC211",
-        "subject": "SIGNALS AND SYSTEMS"
-      },
-      "28251": {
-        "papercode": "ETEC251",
-        "subject": "ANALOG ELECTRONICS "
-      },
-      "28253": {
-        "papercode": "ETEC253",
-        "subject": "SWITCHING THEORY AND LOGIC DESIGN LAB"
-      },
-      "27255": {
-        "papercode": "ETCS255",
-        "subject": "DATA STRUCTURES LAB"
-      },
-      "28257": {
-        "papercode": "ETEC257",
-        "subject": "ELECTRONIC INSTRUMENTS AND MEASUREMENTS LAB"
-      },
-      "28259": {
-        "papercode": "ETEC259",
-        "subject": "SIGNALS AND SYSTEMS LAB"
-      },
     "99102": {
       "papercode": "ETMA102",
       "subject": "APPLIED MATHEMATICS"
@@ -1320,110 +1276,50 @@ function search() {
     var institutecode = JSON.parse(collegecode);
     console.log(subjectdata);
     console.log(subjectdata[99201]);
-    var query = document.querySelector('#search');
+    var branch = document.querySelector('#branch');
     var semester = document.querySelector('#semester');
+    var batch = document.querySelector('#batch');
+    var college = document.querySelector('#college');
     content = document.querySelector('#result');
-    buttonresults = document.querySelector('#search-results');
-    buttonresults.innerHTML += `<div class="loader" style="margin: auto;"></div>`;
-
-  //  content.innerHTML = `<div class="loader" style="margin: auto;"></div>`;
-    console.log(query.value);
+    content.innerHTML = `<div class="loader" style="margin: auto;"></div>`;
+    console.log(batch.value);
     console.log(semester.value);
-    var url = `https://vast-escarpment-73783.herokuapp.com/student/${semester.value}/${query.value}`;
+
+    var studentsdata ;
+
+    var url = `https://vast-escarpment-73783.herokuapp.com/students/${batch.value}/${branch.value}/${college.value}/${semester.value}`;
     // var url = `http://127.0.0.1:8080/student/${semester.value}/${query.value}` ;
     console.log(url);
+    var html = `<input class="form-control" id="myInput" type="text" placeholder="Search.."><br><br>` ;
     fetch(url)
-        .then(data => data.json())
+        .then( data => data.json() )
         // .then( log => log[1684] )
         .then(data => {
-
-            return data[0];
-        })
-        .then(data => {
             console.log(data);
-            var html = `<div class="container" id="userid" style="padding: 10px;"><h5>Student Roll No. : </h5> ${data.rollNo} 
-                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
-                                <h5>Student Name : </h5> ${data.name} <br> <h5>College Name : 
-                                </h5> ${institutecode[parseInt(((data.rollNo / 100000)%1000))].college} 
-                                &nbsp; &nbsp; &nbsp; &nbsp; <h5>Batch - </h5> 20${data.rollNo % 100} </div> <br>
-                                `;
-            content.innerHTML = html;
-            // var table = ``;
+            data.forEach(data => {
+                console.log(data)
+                var calcperc = 50
+                var sum = 0;
+                var total = 0 ;
+                data.results.forEach(data => {
+                    total++ ;
+                    sum += parseInt(data.marks);
+                })
+                calcperc = sum / total ;
+                console.log(calcperc) ;
+                if(calcperc > 5 && calcperc < 99)
+                html += `<div class="progress-bar progress-bar-striped progress-bar-animated" style="width:${calcperc}%">${data.name}
+                <label style="float:right;">${calcperc}%</label></div>`
+            });
+            content.innerHTML = html ;
 
-            var sum = 0;
-            var total = 0;
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#result .progress-bar").filter(function() {
+                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+              });
 
-            table = `<div class="table-responsive"> <table id="demo" class="table table-striped table-hover table-bordered bordered table-condensed no-margin block-shadow">
-                                    <thead>
-                                        <tr>
-                                            <th style='text-align: center'>Paper Id</th>
-                                            <th style='text-align: center'>Paper code</th>
-                                            <th style='text-align: center'>Subject</th>
-                                            <th style='text-align: center'>Marks</th>
-                                            <th style='text-align: center'>Credits</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>`;
-
-            for (key in data.results) {
-
-                /* table += `<p> ${data.results[key].subject}  
-                              &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                              ${data.results[key].marks} </p>`; */
-                //////////////////////
-                var paperid = data.results[key].subject.slice(0, 5);
-
-                console.log(paperid);
-                console.log(subjectdata[paperid]);
-
-                var papercode;
-                if (typeof (subjectdata[paperid]) != 'undefined') {
-                    papercode = subjectdata[paperid].papercode;
-                } else {
-                    papercode = "NA";
-                }
-
-                var subject;
-                if (typeof (subjectdata[paperid]) != 'undefined') {
-                    subject = subjectdata[paperid].subject;
-                } else {
-                    subject = "NA";
-                }
-
-                // console.log(subjectdata[paperid].papercode) ;
-
-                // var paperid = "99201" ;
-
-                total++;
-                sum += parseInt(data.results[key].marks);
-
-                table += `<tr>
-                                    <td>${data.results[key].subject}</td>
-                                    <td>${papercode}</td>
-                                    <td>${subject}</td>
-                                    <td>${data.results[key].marks}</td>
-                                    <td>${data.results[key].subject[6]}</td>
-                                  </tr>`;
-
-            }
-            table += `</tbody>
-                            </table> </div>`;
-
-            console.log(sum);
-            console.log(total);
-            var percentage = sum / total;
-
-            table +=
-                `<br><div style="float: right;" ><label> Percentage : </label> <span> ${percentage} </span> &nbsp; &nbsp; &nbsp; &nbsp; </div>`;
-            table += `<br> <input id="email">
-                      <br> 
-                      <button class="btn btn-primary" onclick="sendmail()" > Send Report </button>
-                      <button class="btn btn-success" onclick="generatePDF()">Download as PDF</button>`;
-            content.innerHTML += table;
-
-            content.style.display = "block" ;
-            document.querySelector('#container1').style.display = "none" ;
-            console.log(data);
         })
         .catch(err => {
             console.log(err);
