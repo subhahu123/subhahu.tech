@@ -1321,12 +1321,13 @@ function search() {
     console.log(subjectdata);
     console.log(subjectdata[99201]);
     var query = document.querySelector('#search');
+    var resultHeading = document.querySelector('#result-head')
     var semester = document.querySelector('#semester');
     content = document.querySelector('#result');
     buttonresults = document.querySelector('#search-results');
     buttonresults.innerHTML += `<div class="loader" style="margin: auto;"></div>`;
 
-  //  content.innerHTML = `<div class="loader" style="margin: auto;"></div>`;
+    //  content.innerHTML = `<div class="loader" style="margin: auto;"></div>`;
     console.log(query.value);
     console.log(semester.value);
     var url = `https://vast-escarpment-73783.herokuapp.com/student/${semester.value}/${query.value}`;
@@ -1341,12 +1342,38 @@ function search() {
         })
         .then(data => {
             console.log(data);
-            var html = `<div class="container" id="userid" style="padding: 10px;"><h5>Student Roll No. : </h5> ${data.rollNo} 
+            /**    var html = `<div class="container" id="userid" style="padding: 10px;"><h5>Roll Number : </h5> ${data.rollNo} / 20${data.rollNo % 100}
                                 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
                                 <h5>Student Name : </h5> ${data.name} <br> <h5>College Name : 
                                 </h5> ${institutecode[parseInt(((data.rollNo / 100000)%1000))].college} 
-                                &nbsp; &nbsp; &nbsp; &nbsp; <h5>Batch - </h5> 20${data.rollNo % 100} </div> <br>
+                                &nbsp; &nbsp; &nbsp; &nbsp; 
+                                <!--
+                                <h5>Batch - </h5> 20${data.rollNo % 100} </div> 
+                                -->
+                                <br>
                                 `;
+        */
+
+            var html = `<img src="./avatar.png" style="height:170px;float:left;">
+            <div class="container" id="userid" style="padding: 10px;text-align:left;margin-top:40px;padding-left:180px">
+            <h5>Roll Number : </h5> ${data.rollNo} / 20${data.rollNo % 100}
+            <br>
+       <h5>Student Name : </h5> ${data.name} 
+       <br>
+       <h5>College Name : 
+       </h5> ${institutecode[parseInt(((data.rollNo / 100000)%1000))].college} 
+     
+       <!--
+       <h5>Batch - </h5> 20${data.rollNo % 100} </div> 
+       -->
+       <br>
+       `;
+
+       resultHeading.innerHTML = `<b>STUDENT DETAILS <span class="badge badge-light" style="background-color:rgb(34, 71, 131);color:white;">${semester.value}</span></b>`
+
+
+
+
             content.innerHTML = html;
             // var table = ``;
 
@@ -1414,15 +1441,35 @@ function search() {
             var percentage = sum / total;
 
             table +=
-                `<br><div style="float: right;" ><label> Percentage : </label> <span> ${percentage} </span> &nbsp; &nbsp; &nbsp; &nbsp; </div>`;
-            table += `<br> <input id="email">
-                      <br> 
-                      <button class="btn btn-primary" onclick="sendmail()" > Send Report </button>
-                      <button class="btn btn-success" onclick="generatePDF()">Download as PDF</button>`;
+                `<br><div style="float: right;" ><label></label>
+                <span class="badge badge-pill badge-success" style="font-size:x-large;">Percentage : ${percentage}</span>&nbsp; &nbsp; &nbsp; &nbsp; </div>`;
+            table += `<br> 
+                      <br>                       
+                      <div id="emailbox-position">
+        <div class="container collapse" id="email-box">
+          <div class="jumbotron text-center" style="background-color:green;color: white;" id="email-head">
+            Send Your Report
+          </div>
+          <div class="container" style="border: 1px solid #e4e4e4;">
+          <input id="email" name="email">
+            <br>
+            <br>
+            <button class="btn btn-success" onclick="sendmail()" style="width:100%;"> Send Report </button>
+          </div>
+        </div>
+        <br>
+        <div id="download-icon">
+            <i class="fa fa-download" aria-hidden="true" style="color:white;font-size:48px;background-color: green;" onclick="generatePDF()"></i>
+        </div>
+        <div id="email-icon">
+          <i class="far fa-envelope" style="color:white;font-size:48px;background-color: green;" data-toggle="collapse" data-target="#email-box"></i>
+        </div>
+      </div>`;
+
             content.innerHTML += table;
 
-            content.style.display = "block" ;
-            document.querySelector('#container1').style.display = "none" ;
+            content.style.display = "block";
+            document.querySelector('#container1').style.display = "none";
             console.log(data);
         })
         .catch(err => {
@@ -1455,7 +1502,7 @@ function sendmail() {
 
 
     var x = document.getElementById("snackbar");
-
+    x.textContent = "Email Sent";
     // Add the "show" class to DIV
     x.className = "show";
 

@@ -74,6 +74,14 @@
   <!-- Latest compiled JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+
+
+
+  <script src="https://kit.fontawesome.com/7fa36e12b7.js" crossorigin="anonymous"></script>
+
+
+
+
   <style>
     /* The snackbar - position it at the bottom and in the middle of the screen */
     #snackbar {
@@ -193,6 +201,7 @@
     html,
     body {
       overflow-x: hidden;
+      z-index: 0
     }
 
     label {
@@ -229,23 +238,26 @@
     }
 
     .row {
-      width: 50%;
+      display: flex;
     }
 
     #head-box {
-      margin-left: 19%;
-      margin-right: 31%;
+      margin-left: 0;
+      margin-right: 0;
     }
 
     .container {
       border-color: rgb(34, 71, 131);
       border-width: 5px;
+      margin: 15px;
     }
 
     #container1 {
+      /**
       border-style: solid;
       padding-top: 20px;
       padding-bottom: 20px;
+      **/
     }
 
     #result-head {
@@ -254,15 +266,18 @@
 
     #result {
       display: none;
-      border-style: solid none none none;
+    /**  border-style: none solid solid solid;  **/
       padding-top: 20px;
       padding-bottom: 20px;
+      margin: 15px;
     }
 
     #logo-heading {
       color: rgb(249, 247, 238);
       float: left;
-      padding-top: 24px;
+      
+    /*  padding-top: 24px;  */
+
     }
 
     h5 {
@@ -280,6 +295,65 @@
       background-color: #dee2e6;
       border: 3px solid white !important;
       color: black;
+      font-weight: bold;
+    }
+
+    #email-icon {
+      position: fixed;
+      display: block;
+      padding: 20px;
+      margin: 20px;
+      cursor: pointer;
+      right: 0;
+      bottom: 0;
+      background-color: green;
+      border-radius: 50%;
+      z-index: 3;
+    }
+
+    #download-icon {
+      position: fixed;
+      display: block;
+      padding: 20px;
+      margin: 20px;
+      cursor: pointer;
+      right: 0;
+      bottom: 100px;
+      background-color: green;
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    #email-box {
+      width: 300px;
+      height: 200px;
+      background-color: white;
+      padding: 0;
+      z-index: 2;
+    }
+
+    #email-head {
+      height: 70px;
+      padding-top: 25px;
+      border: 50%;
+      margin: 0;
+    }
+
+    #email {
+      border-style: solid;
+      border-color: #d0d0d0;
+      border-width: 2px;
+      color: #656565;
+      border-radius: 5px;
+    }
+
+    #emailbox-position {
+      position: fixed;
+      display: block;
+      padding: 20px;
+      margin: 20px;
+      right: 0;
+      bottom: 0;
     }
 
 
@@ -336,6 +410,21 @@
 
   <script>
     function generatePDF() {
+
+
+
+      var x = document.getElementById("snackbar");
+      x.textContent = "Downloading......"
+      // Add the "show" class to DIV
+      x.className = "show";
+
+      // After 3 seconds, remove the show class from DIV
+      setTimeout(function () {
+        x.className = x.className.replace("show", "");
+      }, 3000);
+
+
+
       // Choose the element that our invoice is rendered in.
       const element = document.getElementById("result");
       // Choose the element and save the PDF for our user.
@@ -353,50 +442,199 @@
 <body>
 
 
-  <div class="jumbotron text-center">
-    <div class="row" id="head-box" style="display: flex;">
-      <div class="col" style="width:30%;">
-        <img src="./logo.png" class="logo">
+  <!--
+
+  <div class="container" id="email-box">
+    <div class="jumbotron text-center" style="background-color:green;color: white;" id="email-head">
+      Send Your Report
+    </div>
+    <div class="container" style="border: 1px solid #e4e4e4;">
+      <input id="email" name="email">
+      <br>
+      <br>
+      <button class="btn btn-success" onclick="sendmail()" style="width:100%;"> Send Report </button>
+    </div>
+  </div>
+
+-->
+
+
+
+
+  <!--
+    <div id="emailbox-position">
+        <div class="container" id="email-box">
+          <div class="jumbotron text-center" style="background-color:green;color: white;" id="email-head">
+            Send Your Report
+          </div>
+          <div class="container">
+            <input type="text" name="email">
+            <br>
+            <button>Send</button>
+          </div>
+        </div>
+        <br>
+        <div id="email-icon">
+          <i class="far fa-envelope" style="color:white;font-size:48px;background-color: green;"></i>
+        </div>
       </div>
-      <div class="col" style="width:70%;">
-        <h2 id="logo-heading">Guru Gobind Singh <br /> Indraprastha University</h2>
+-->
+
+
+
+
+  <div class="jumbotron text-center">
+    <div id="head-box" style="display: flex;">
+      <div>
+        <img src="logo.png" class="logo">
+      </div>
+      <br>
+      <div>
+        <h2 id="logo-heading">GURU GOBIND SINGH INDRAPRASTHA UNIVERSITY (NAAC ACCREDITED 'A' GRADE)<br> 
+          <h4 style="color:white;">Sector - 16C, Dwarka, New Delhi - 110078 (India)</h4>
+          <h5 style="color:white;">A Web Portal For Examination Results</h5></h2>
       </div>
     </div>
   </div>
 
-  <h1 id="result-head"> <b> B.TECH &nbsp; RESULT </b> </h1>
 
-  <br>
+  <div class="row">
 
-  <div class="container" id="container1">
-    <div class="text-center" style="margin: auto">
-      <label for="search"><b>Search By Roll No.</b></label>
+    <div class="container col" style="border-style:none solid none none;">
 
-      <input type="text" class="form-control" id="search" style="width: 50%;margin: auto;" value="02896202717">
-      <br>
+      <h1 id="result-head"> <b> FIND RESULT </b>  </h1>
 
-      <div class="form-group" style="width: 20%;margin: auto;">
-        <label for="sel1"><b>Select Semester:</b></label>
-        <select class="form-control" id="semester">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-          <option>6</option>
-        </select>
+
+
+      <div class="container" id="container1">
+        <br>
+        <div class="text-center" style="margin: auto">
+          <label for="search"><b>Roll Number</b></label>
+
+          <input type="text" class="form-control" id="search" style="width: 30%;margin: auto;" value="02896202717">
+          <br>
+
+          <div class="form-group" style="width: 10%;margin: auto;">
+            <label for="sel1"><b>Semester</b></label>
+            <select class="form-control text-center" id="semester">
+
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+
+              <!--      <option>1&#738;&#x1D57;</option>
+              <option>2&#8319;&#7496;</option>
+              <option>3&#691;&#7496;</option>
+              <option>4ᵗʰ</option>
+              <option>5ᵗʰ</option>
+              <option>6ᵗʰ</option>
+          -->
+
+            </select>
+          </div> <br>
+
+          <button class="btn btn-primary" onclick="search()" id="search-results">Search</button>
+        </div>
       </div> <br>
 
-      <button class="btn btn-primary" onclick="search()" id="search-results">Search</button>
+
+
+
+      <div id="result" class="text-center container">
+
+
+      </div>
+
+
+
+
+
+
     </div>
-  </div> <br>
+
+
+    <div class="container col" style="">
+
+
+      <b>ABOUT GURU GOBIND SINGH INDRAPRASTHA UNIVERSITY </b> <br> <br>
+      Guru Gobind Singh Indraprastha University has been established by Govt. of NCT of Delhi under the provisions of
+      Guru Gobind Singh Indraprastha University Act, 1998. The University is recognized by the University Grants
+      Commission (UGC), India under Section 2 (f) and 12 (b) of the UGC Act. The University was graded as "A" by the
+      National Assessment and Accreditation Council, Bangalore for the period 2013 to 2018.
+      <br>
+      It is an affiliating and teaching University which aims at facilitating and promoting studies, research and
+      extension work in emerging areas of higher education with focus on professional education, for example
+      engineering, technology, management studies, medicine, pharmacy, nursing, law, etc., and also to achieve
+      excellence in these and connected fields and other matters connected therewith or incidental thereto.
+      <br>
+      In order to serve the broad purpose for which the University is established, it set out its statements of vision,
+      mission and Quality Policy.
+      <br> <br>
 
 
 
-  <div id="result" class="text-center container">
+      <b>ABOUT DR. AKHILESH DAS GUPTA INSTITUTE OF TECHNOLOGY AND MANAGEMENT</b> <br> <br>
+      Dr. Akhilesh Das Gupta Institute of Technology and Management, formerly known as Northern India Engineering
+      College(NIEC), New Delhi was established by BBDES, LUCKNOW in the year 2003. NIEC has an aesthetically designed
+      campus spread over approximately 9 acres of lush green environment at Shastri Park. The Campus comprises of five
+      interconnected blocks covering a built up area of approx. 3.0 Lac sq, ft. NIEC offers following Under Graduate and
+      Post Graduate level full time Professional programs approved by AICTE in affiliation with Guru Gobind Singh
+      Indraprastha University (GGSIPU), Delhi.
+      <br> <br>
+
+
+
+
+      <b>ABOUT OUR TEAM</b> <br> <br>
+      <ul style="text-align:left;">
+          <li>Subhahu Jain (Developer) - <a href="https://www.linkedin.com/in/jainsubhahu/"><span class="label label-success">LinkedIn</span></a> &nbsp;
+            <a href="#"><span class="label label-success">GitHub</span></a> </li>
+          <li>Manan Mahajan (Designer) - <a href="https://www.linkedin.com/in/manan-mahajan-a02353154"><span class="label label-success">LinkedIn</span></a></li>
+        </ul>
+
+    </div>
 
 
   </div>
+
+
+  <br> <br>
+
+
+  <div class="jumbotron" style="margin-top:10px;height:250px;margin-bottom:0;color:white;">
+    <b>DISCLAIMER FOR GGSIPU RESULTS </b> <br> <br>
+    If you require any more information or have any questions about our site's disclaimer, please feel free to contact
+    us by email at <span class="badge badge-info">admin@subhahu.tech</span>. All the information on this website - 
+    <span class="badge badge-pill badge-info">http://ipresults.ml/ </span>- is published in
+    good faith and for general information purpose only. GGSIPU Results does not make any warranties about the
+    completeness, reliability and accuracy of this information. Any action you take upon the information you find on
+    this website (GGSIPU Results), is strictly at your own risk. GGSIPU Results will not be liable for any losses
+    and/or damages in connection with the use of our website.
+    <br>
+    From our website, you can visit other websites by following hyperlinks to such external sites. While we strive to
+    provide only quality links to useful and ethical websites, we have no control over the content and nature of these
+    sites. These links to other websites do not imply a recommendation for all the content found on these sites. Site
+    owners and content may change without notice and may occur before we have the opportunity to remove a link which
+    may have gone 'bad'.
+    <br>
+    Please be also aware that when you leave our website, other sites may have different privacy policies and terms
+    which are beyond our control. And be sure to check the Privacy Policies of these sites as well as their "Terms
+    of Service" before engaging in any business or uploading any information.
+
+  </div>
+
+
+
+
+
+
+
+
+
+
 
 
 
